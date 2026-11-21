@@ -85,7 +85,7 @@ The only stored data is the best score, in the browser's localStorage on the pla
 
 ## Open questions
 
-- Should the game be deployed (for example GitHub Pages, which needs a public repo on the free plan), and should the repo be public or private?
+- Resolved 2026-11-21: the repo is public (MIT licence) and the game is deployed to GitHub Pages.
 - Gap list from adoption on 2026-11-21: see below. The owner chose on 2026-11-21 to fix all of it in the adoption refactor.
 
 ### Gap list (adoption, 2026-11-21)

@@ -35,7 +35,7 @@ browser on this device only; nothing is sent anywhere.
 
 ## Use it
 
-The game is not online yet. Follow "Run it yourself" below to play it on your own computer.
+Play it in your browser at **<https://sivaprasadreddyuppuluri.github.io/neon-conga-snek/>**. Nothing to install. Press Space or tap the board to start.
 
 ## Run it yourself
 
@@ -55,7 +55,7 @@ You need two free programs: **Git** (to download the code) and **Node.js** (to b
 4. Open a terminal (Terminal on macOS and Linux; on Windows, the WSL or PowerShell window).
 5. Download the code and go into its folder:
    ```bash
-   git clone <address of this repository>
+   git clone https://github.com/sivaprasadreddyuppuluri/neon-conga-snek.git
    cd neon-conga-snek
    ```
 6. Install everything the game needs (once): `make setup` (or `npm ci`).
@@ -70,6 +70,6 @@ You need two free programs: **Git** (to download the code) and **Node.js** (to b
   accessibility check, against a production build)
 - Lint, formatting and type checks: `make lint`
 - Production build into `dist/`: `make build`
-- Deploy: `make deploy` (not deployed yet)
+- Deploy: automatic to GitHub Pages after CI passes on `main`. `make deploy` triggers one by hand; `make deploy REF=<commit>` redeploys an earlier commit to roll back
 - What the game should do, and how we check it: `docs/brief.md`
 - How the code is laid out: `CLAUDE.md`
