@@ -10,3 +10,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # typescript-eslint supports TypeScript <6.1 only (checked 2026-11-21).
+      # Remove this once it supports TypeScript 7; see CLAUDE.md, Decisions.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
