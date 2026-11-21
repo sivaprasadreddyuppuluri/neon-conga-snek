@@ -1,0 +1,12 @@
+{
+  "name": "neon-conga-snek",
+  "purpose": "Snake as a neon disco conga line whose live-synthesised music speeds up as the line grows",
+  "owner": "sivauppuluri",
+  "stack": "typescript-vite",
+  "visibility": "private",
+  "deploy": "none",
+  "url": "none",
+  "region": "none",
+  "last_maintained": "2026-11-21",
+  "last_security_scan": "never"
+}

@@ -1,0 +1,141 @@
+:root {
+  --bg: #06000f;
+  --glow-pink: #ff00d4;
+  --glow-cyan: #00e5ff;
+  --text: #f4ecff;
+  --button-bg: #1a0033;
+  --button-border: #ff4fd8;
+  --focus: #00e5ff;
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Orbitron, system-ui, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at 50% 40%, #1a0033 0%, var(--bg) 70%);
+}
+
+main {
+  height: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 0;
+  box-sizing: border-box;
+}
+
+/* The stage takes whatever space the buttons leave (however many rows they wrap to),
+   and the board fills as much of it as its 784×612 shape allows. */
+.stage {
+  flex: 1;
+  min-height: 0;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  container-type: size;
+  padding: 0 2vw;
+}
+
+canvas {
+  width: min(100cqw, 100cqh * 784 / 612);
+  aspect-ratio: 784 / 612;
+  border-radius: 14px;
+  box-shadow:
+    0 0 40px color-mix(in srgb, var(--glow-pink) 33%, transparent),
+    0 0 90px color-mix(in srgb, var(--glow-cyan) 20%, transparent);
+  touch-action: none;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 12px;
+  padding: 0 16px;
+}
+
+button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid var(--button-border);
+  border-radius: 999px;
+  background: var(--button-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2a0050;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* On/off switch inside toggle buttons: the knob's side and fill show the state, not just colour. */
+.switch {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 16px;
+  margin-left: 6px;
+  vertical-align: middle;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  box-sizing: border-box;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+button[aria-pressed="true"] .switch::after {
+  left: 16px;
+  background: currentColor;
+}
+
+button[aria-pressed="false"] {
+  border-style: dashed;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

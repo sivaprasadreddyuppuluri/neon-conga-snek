@@ -1,0 +1,47 @@
+# Oberchecker CI: lint, test and secret scan on every pull request and on main.
+# Keep it quick: private repos get 2,000 free Actions minutes a month.
+# Action versions run on Node 24; Dependabot keeps them current.
+name: CI
+
+on:
+  # Pushes to main only: work branches are checked through their pull request,
+  # so branch pushes don't run everything twice.
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # Node for the TypeScript toolchain
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - run: make setup
+      - run: make lint
+      - run: make test
+
+  secrets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # On pull requests, gitleaks-action lists the PR's commits through GitHub's API,
+    # which needs read access to pull requests (without it: 403 "Resource not accessible").
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

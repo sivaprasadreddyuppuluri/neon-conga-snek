@@ -1,0 +1,33 @@
+{
+  "name": "neon-conga-snek",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Snake, but you're leading a neon disco conga line and the DJ speeds up as it grows.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "lint": "eslint . && prettier --check . && tsc --noEmit"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.65.1",
+    "@types/node": "24.19.2",
+    "eslint": "10.15.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.14.0",
+    "prettier": "3.10.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.73.0",
+    "vite": "8.3.8",
+    "vitest": "5.1.1"
+  },
+  "dependencies": {
+    "@fontsource/monoton": "5.3.0",
+    "@fontsource/orbitron": "5.3.0"
+  }
+}

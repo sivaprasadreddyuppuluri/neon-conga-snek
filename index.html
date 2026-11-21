@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Snake, but you're the head of a conga line on a light-up disco floor, and the DJ speeds up as the line grows."
+    />
+    <meta name="theme-color" content="#06000f" />
+    <title>Neon Conga Snek</title>
+  </head>
+  <body>
+    <main id="app" data-status="title">
+      <h1 class="sr-only">Neon Conga Snek</h1>
+      <p id="how-to-play" class="sr-only">
+        Lead a conga line around a dance floor and pick up party animals. Each one joins the line and the
+        music speeds up. Running into your own line ends the game. Arrow keys or W A S D steer, Space starts
+        and pauses, P pauses, M mutes. On a touch screen, tap the board to start and swipe to steer.
+      </p>
+      <div class="stage">
+        <canvas
+          id="game"
+          role="img"
+          aria-label="Neon Conga Snek game board"
+          aria-describedby="how-to-play scoreline"
+        ></canvas>
+      </div>
+      <p id="scoreline" class="sr-only"></p>
+      <div class="controls">
+        <button id="btn-play" type="button"><span aria-hidden="true">▶</span> Start</button>
+        <button id="btn-sound" type="button" aria-pressed="true">
+          <span class="icon" aria-hidden="true">🔊</span> Sound
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        <button id="btn-calm" type="button" aria-pressed="false">
+          <span aria-hidden="true">🌙</span> Calm effects <span class="switch" aria-hidden="true"></span>
+        </button>
+      </div>
+      <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
