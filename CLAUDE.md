@@ -24,7 +24,7 @@ A static TypeScript site built with Vite. One canvas draws the whole game; real 
 - **Deploy: GitHub Pages** via `.github/workflows/deploy.yml`, triggered by a green CI run of a push to `main` (`workflow_run`), so nothing broken ships. `make deploy REF=<sha>` redeploys any commit (rollback). The Vite `base: "./"` keeps asset paths working under the `/neon-conga-snek/` sub-path. No EU region choice: Pages serves from a global network, which is fine because the game has no server and stores nothing off the device.
 - **Fonts are bundled** (`@fontsource/monoton`, `@fontsource/orbitron`, both under the SIL Open Font License) instead of loaded from Google Fonts, for privacy and offline play.
 - **Quiet room, loud floor** (unslop polish, 2026-11-21). The board carries all the neon; the page around it stays dark: no glow around the board, buttons on a raised surface with a hairline border, one light primary button (Start/Pause). Emoji in buttons and the in-game shouts with exclamation marks stay; the owner chose that. Title-screen controls are drawn as keycaps (`drawKeyRow`).
-- **TypeScript stays on 6.0.x.** TS 7 exists, but typescript-eslint supports only `<6.1` as of 2026-11-21. Upgrade once it supports 7.
+- **TypeScript stays on 6.0.x.** TS 7 exists, but typescript-eslint supports only `<6.1` as of 2026-11-21. Upgrade once it supports 7, and remove the TypeScript major-version ignore in `.github/dependabot.yml`.
 - **`?debug`** exposes the game as `window.__snek` so browser tests can set up a crash without playing for minutes. It reveals nothing secret.
 
 ## Gotchas
