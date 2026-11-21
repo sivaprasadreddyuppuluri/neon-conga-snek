@@ -29,3 +29,6 @@ test-results/
 # System files
 .DS_Store
 Thumbs.db
+
+# Playwright MCP browser session output
+.playwright-mcp/

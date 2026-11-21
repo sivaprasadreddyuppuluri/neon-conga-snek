@@ -1,11 +1,15 @@
 :root {
   --bg: #06000f;
-  --glow-pink: #ff00d4;
-  --glow-cyan: #00e5ff;
+  /* The room around the dance floor stays dark and quiet; the board carries the neon. */
   --text: #f4ecff;
-  --button-bg: #1a0033;
-  --button-border: #ff4fd8;
+  --raised: #17121f;
+  --raised-hover: #221a2c;
+  --hairline: rgb(244 236 255 / 0.12);
+  --primary-bg: #f4ecff;
+  --primary-hover: #ffffff;
+  --primary-text: #0b0612;
   --focus: #00e5ff;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
   color-scheme: dark;
 }
 
@@ -16,10 +20,6 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Orbitron, system-ui, sans-serif;
-}
-
-body {
-  background: radial-gradient(circle at 50% 40%, #1a0033 0%, var(--bg) 70%);
 }
 
 main {
@@ -37,7 +37,10 @@ main {
 /* The stage takes whatever space the buttons leave (however many rows they wrap to),
    and the board fills as much of it as its 784×612 shape allows. */
 .stage {
-  flex: 1;
+  /* As tall as the board would be at full width, shrinking when the screen is short,
+     so board and buttons stay together as one centred group. */
+  flex: 0 1 auto;
+  height: calc(96vw * 612 / 784);
   min-height: 0;
   align-self: stretch;
   display: grid;
@@ -49,10 +52,8 @@ main {
 canvas {
   width: min(100cqw, 100cqh * 784 / 612);
   aspect-ratio: 784 / 612;
-  border-radius: 14px;
-  box-shadow:
-    0 0 40px color-mix(in srgb, var(--glow-pink) 33%, transparent),
-    0 0 90px color-mix(in srgb, var(--glow-cyan) 20%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--hairline);
   touch-action: none;
 }
 
@@ -68,18 +69,37 @@ button {
   min-width: 44px;
   min-height: 44px;
   padding: 8px 16px;
-  border: 2px solid var(--button-border);
-  border-radius: 999px;
-  background: var(--button-bg);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--raised);
   color: var(--text);
   font: inherit;
   font-size: 0.875rem;
   letter-spacing: 0.04em;
   cursor: pointer;
+  transition:
+    background-color 150ms var(--ease),
+    transform 150ms var(--ease);
 }
 
 button:hover {
-  background: #2a0050;
+  background: var(--raised-hover);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* The one primary action: start, pause, resume or play again. */
+#btn-play {
+  background: var(--primary-bg);
+  border-color: var(--primary-bg);
+  color: var(--primary-text);
+  font-weight: 900;
+}
+
+#btn-play:hover {
+  background: var(--primary-hover);
 }
 
 button:focus-visible {
@@ -115,10 +135,6 @@ button:focus-visible {
 button[aria-pressed="true"] .switch::after {
   left: 16px;
   background: currentColor;
-}
-
-button[aria-pressed="false"] {
-  border-style: dashed;
 }
 
 .sr-only {

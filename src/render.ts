@@ -332,7 +332,7 @@ export class Renderer {
       if (left > 0) active.push(`${POWERS[kind].emoji}${Math.ceil(left / 1000)}`);
     }
     const status =
-      (active.length ? active.join("  ") : `conga line: ${game.snake.length}`) + (view.muted ? "  🔇" : "");
+      (active.length ? active.join("  ") : `CONGA LINE ${game.snake.length}`) + (view.muted ? "  🔇" : "");
     ctx.font = `12px Orbitron, ${EMOJI_FONT}`;
     ctx.textAlign = "center";
     ctx.fillStyle = "rgba(255,255,255,0.65)";
@@ -340,7 +340,6 @@ export class Renderer {
   }
 
   private drawTitle(view: View): void {
-    const { ctx } = this;
     this.overlay();
     const hue = view.calm ? 300 : (view.now / 12) % 360;
     this.glowText("NEON CONGA", W / 2, H * 0.27, 64, hue, "Monoton");
@@ -348,12 +347,90 @@ export class Renderer {
     this.glowText("Lead the conga line. Pick up party animals.", W / 2, H * 0.53, 16, 190);
     this.glowText("Don't trip over your own butt.", W / 2, H * 0.58, 16, 190);
     this.glowText("The longer the line, the faster the DJ plays.", W / 2, H * 0.63, 16, 50);
-    ctx.font = `22px ${EMOJI_FONT}`;
-    ctx.textAlign = "center";
-    ctx.fillText("🌶️ speed   🍌 flipped   🪩 ghost   🧀 shrink", W / 2, H * 0.71);
-    const help = view.touch ? "SWIPE TO STEER" : "ARROWS / WASD · P pause · M mute";
-    this.glowText(help, W / 2, H * 0.79, 13, 280);
+    this.drawLegend(H * 0.71);
+    if (view.touch) this.glowText("SWIPE TO STEER", W / 2, H * 0.79, 13, 280);
+    else
+      this.drawKeyRow(H * 0.79, [
+        [["W", "A", "S", "D"], "OR"],
+        [["←", "↑", "↓", "→"], "STEER"],
+        [["SPACE"], "PLAY · PAUSE"],
+        [["M"], "MUTE"],
+      ]);
     this.prompt(view.touch ? "TAP TO PARTY" : "PRESS SPACE TO PARTY", H * 0.89, 24, view);
+  }
+
+  /** The four power-ups, each with what it does, in four even columns. */
+  private drawLegend(y: number): void {
+    const { ctx } = this;
+    const items = (["hot", "banana", "disco", "cheese"] as const).map((k, i) => ({
+      emoji: POWERS[k].emoji,
+      word: ["SPEED", "FLIPPED", "GHOST", "SHRINK"][i],
+    }));
+    items.forEach((item, i) => {
+      const cx = W * (0.2 + i * 0.2);
+      ctx.font = `900 13px Orbitron, monospace`;
+      const wordW = ctx.measureText(item.word).width;
+      const total = 24 + 8 + wordW;
+      this.emoji(item.emoji, cx - total / 2 + 12, y, 22);
+      ctx.font = `900 13px Orbitron, monospace`;
+      ctx.textAlign = "left";
+      ctx.fillStyle = "rgba(244, 236, 255, 0.85)";
+      ctx.fillText(item.word, cx - total / 2 + 32, y);
+    });
+  }
+
+  /**
+   * Keyboard controls as small keycaps, shaped like the floor tiles.
+   * Each group is some keys followed by what they do.
+   */
+  private drawKeyRow(y: number, groups: [string[], string][]): void {
+    const { ctx } = this;
+    const capFont = `400 12px Orbitron, ${EMOJI_FONT}`;
+    const labelFont = `900 12px Orbitron, monospace`;
+    const capH = 24;
+    const capPad = 8;
+    const capGap = 4;
+    const labelGap = 8;
+    const groupGap = 24;
+
+    const capW = (key: string): number => {
+      ctx.font = capFont;
+      return Math.max(capH, ctx.measureText(key).width + capPad * 2);
+    };
+    const labelW = (label: string): number => {
+      ctx.font = labelFont;
+      return ctx.measureText(label).width;
+    };
+    const groupW = ([keys, label]: [string[], string]): number =>
+      keys.reduce((sum, k) => sum + capW(k), 0) + capGap * (keys.length - 1) + labelGap + labelW(label);
+
+    const total = groups.reduce((sum, g) => sum + groupW(g), 0) + groupGap * (groups.length - 1);
+    let x = W / 2 - total / 2;
+    ctx.save();
+    ctx.textBaseline = "middle";
+    for (const [keys, label] of groups) {
+      for (const key of keys) {
+        const w = capW(key);
+        this.roundRect(x, y - capH / 2, w, capH, 6);
+        ctx.fillStyle = "rgba(244, 236, 255, 0.06)";
+        ctx.fill();
+        ctx.strokeStyle = "hsla(280, 100%, 75%, 0.55)";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.font = capFont;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#f4ecff";
+        ctx.fillText(key, x + w / 2, y + 1);
+        x += w + capGap;
+      }
+      x += labelGap - capGap;
+      ctx.font = labelFont;
+      ctx.textAlign = "left";
+      ctx.fillStyle = "hsl(280, 100%, 82%)";
+      ctx.fillText(label, x, y + 1);
+      x += labelW(label) + groupGap;
+    }
+    ctx.restore();
   }
 
   private drawDead(game: Game, view: View): void {
