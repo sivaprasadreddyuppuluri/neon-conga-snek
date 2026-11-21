@@ -25,5 +25,10 @@ lint:
 build:
 	npm run build
 
+# Deploys happen automatically after CI passes on main. This triggers one by hand,
+# e.g. to roll back: make deploy REF=<earlier commit sha>
+REF ?= main
 deploy:
-	@echo "not deployed yet (see the oberchecker deploy skill)"
+	gh workflow run deploy.yml --ref main -f ref=$(REF)
+	@echo "Deploying $(REF). Watch it with: gh run list --workflow deploy.yml --limit 1"
+	@echo "Live at https://sivaprasadreddyuppuluri.github.io/neon-conga-snek/"
