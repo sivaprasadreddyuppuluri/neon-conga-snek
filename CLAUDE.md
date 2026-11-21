@@ -22,6 +22,7 @@ A static TypeScript site built with Vite. One canvas draws the whole game; real 
 - **Rules emit events** instead of calling audio and particles, so they stay testable and the shell decides how to react.
 - **Calm effects** (AC20) start on if the OS asks for reduced motion; the player's own choice is remembered after that. Calm mode stops shake, floor reshuffle and pulse, banana wobble, disco flicker, segment wiggle and blinking text; power-ups fade instead of blinking.
 - **Fonts are bundled** (`@fontsource/monoton`, `@fontsource/orbitron`, both under the SIL Open Font License) instead of loaded from Google Fonts, for privacy and offline play.
+- **Quiet room, loud floor** (unslop polish, 2026-11-21). The board carries all the neon; the page around it stays dark: no glow around the board, buttons on a raised surface with a hairline border, one light primary button (Start/Pause). Emoji in buttons and the in-game shouts with exclamation marks stay; the owner chose that. Title-screen controls are drawn as keycaps (`drawKeyRow`).
 - **TypeScript stays on 6.0.x.** TS 7 exists, but typescript-eslint supports only `<6.1` as of 2026-11-21. Upgrade once it supports 7.
 - **`?debug`** exposes the game as `window.__snek` so browser tests can set up a crash without playing for minutes. It reveals nothing secret.
 
@@ -32,7 +33,7 @@ A static TypeScript site built with Vite. One canvas draws the whole game; real 
 - Browsers only allow audio after a user gesture; `NeonBeat.ensure()` creates/resumes the `AudioContext` on start. On touch, the game therefore starts on `touchend`. `touchstart` is not a user activation, and starting there leaves phones silent.
 - The key handler ignores Ctrl/Cmd/Alt combinations (browser shortcuts) and auto-repeat for anything but steering (holding Space would otherwise flicker pause).
 - Buttons drop focus after a mouse/touch press (`detail > 0`) so Space goes back to the game; keyboard presses keep focus.
-- The board's size comes from a CSS size container (`.stage`, `cqw`/`cqh`), so it fits however many rows the buttons wrap to.
+- The board's size comes from a CSS size container (`.stage`, `cqw`/`cqh`). The stage is as tall as the board at full width and shrinks on short screens, so board and buttons stay one centred group however many rows the buttons wrap to.
 - `window.blur` pauses the game, so browser tests that open devtools or switch windows will see it paused.
 - `fsevents` shows up under `npm install-scripts ls` as not approved. It's an optional macOS file watcher, and nothing needs it.
 
